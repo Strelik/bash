@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+# Timeouting commands shell script helper timeout3. Timeout3 script not written by me. Get it via the url below. 
+# https://stackoverflow.com/a/687994/315168
+
+
+#Variables
+TIMEOUT=./path/to/timeout3
+inputscript=./path/to/inputscript
+
+# Run one cycle of continous integration. You could use a while loop for continuous running.
+# Pass through a script you want to run via inputscript above and give it 5 minutes to finish
+echo "Starting test run"
+$TIMEOUT -t 300 $inputscript
+result=$?
+
+#If the passed through process takes too long from being stuck etc, TIMEOUT will return 143 indicating it killed the process.
+if [ "$result" == "143" ] ; then
+   echo "------- CI TIMEOUT OOPS --------"
+   echo "Continuous integration tests timed out - check the screen for problems"
+fi
+
